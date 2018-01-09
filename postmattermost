@@ -1,0 +1,24 @@
+#!/bin/bash
+
+usage_exit() {
+        echo "Usage: postmattermost -n <name> -t <text> -u <mattermost url>" 1>&2
+        exit 1
+}
+
+while getopts n:t:u:h OPT
+do
+    case $OPT in
+        n)  NAME=$OPTARG
+            ;;
+        t)  TEXT=$OPTARG
+            ;;
+        u)  MATTERMOST_URL=$OPTARG
+            ;;
+        h)  usage_exit
+            ;;
+        \?) usage_exit
+            ;;
+    esac
+done
+
+curl -i -X POST -d "payload={\"username\": \"$NAME\",\"text\": \"$TEXT\"}" $MATTERMOST_URL
